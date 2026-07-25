@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Assessment Results{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> <a href="{% url 'assessments:assessment_list' %}">Assessments</a> <i class="fas fa-chevron-right"></i> Results</div>
+    <h1>Assessment <span class="gradient-text">Results</span></h1>
+</div>
+<div class="container">
+    <div class="grid-3 mb-4">
+        <div class="card widget text-center"><div class="widget-value" style="color:#667eea;">{{ stats.total_taken }}</div><div class="widget-label">Total Assessments</div></div>
+        <div class="card widget text-center"><div class="widget-value" style="color:#43e97b;">{{ stats.passed }}</div><div class="widget-label">Passed</div></div>
+        <div class="card widget text-center"><div class="widget-value" style="color:#4facfe;">{{ stats.avg_score }}%</div><div class="widget-label">Average Score</div></div>
+    </div>
+    {% if results %}
+    <div class="table-container">
+        <table><thead><tr><th>Assessment</th><th>Category</th><th>Score</th><th>Status</th><th>AI Feedback</th><th>Action</th></tr></thead>
+            <tbody>{% for result in results %}<tr>
+                <td style="font-weight:600;">{{ result.assessment.title }}</td>
+                <td><span class="badge badge-primary">{{ result.assessment.get_category_display }}</span></td>
+                <td><span style="font-weight:700;color:{% if result.passed %}#43e97b{% else %}#fa709a{% endif %};">{{ result.percentage }}%</span></td>
+                <td>{% if result.passed %}<span class="badge badge-success"><i class="fas fa-check"></i> Passed</span>{% else %}<span class="badge badge-danger"><i class="fas fa-times"></i> Failed</span>{% endif %}</td>
+                <td style="font-size: 0.85rem; color: var(--text-secondary); max-width: 250px;">{{ result.validation_notes|default:"-" }}</td>
+                <td>
+                    {% if result.passed and result.certificate %}
+                        <a href="{% url 'assessments:certificate' result.certificate.id %}" target="_blank" class="btn btn-sm btn-outline"><i class="fas fa-download"></i> Certificate</a>
+                    {% endif %}
+                </td>
+            </tr>{% endfor %}</tbody>
+        </table>
+        <div style="text-align:center; margin-top: 2rem;">
+            <a href="{% url 'assessments:leaderboard' %}" class="btn btn-primary"><i class="fas fa-trophy"></i> View Leaderboard</a>
+        </div>
+    </div>
+    {% else %}<div class="card text-center" style="padding:3rem;"><p class="text-muted">No assessment results yet. Take your first assessment!</p><a href="{% url 'assessments:assessment_list' %}" class="btn btn-primary mt-2"><i class="fas fa-stethoscope"></i> Browse Assessments</a></div>{% endif %}
+</div>
+{% endblock %}

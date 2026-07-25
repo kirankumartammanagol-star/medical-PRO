@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> Dashboard</div>
+    <h1>Welcome back, <span class="gradient-text">{{ user.first_name|default:user.username }}</span></h1>
+    <p>Manage your healthcare career, credentials, and skill development</p>
+</div>
+
+<div class="container">
+    <!-- Dashboard Widgets -->
+    <div class="dashboard-grid">
+        <div class="card widget">
+            <div class="widget-icon" style="background:rgba(0,212,170,0.15);color:#00d4aa;"><i class="fas fa-certificate"></i></div>
+            <div class="widget-value" style="color:#00d4aa;">{{ credentials_count }}</div>
+            <div class="widget-label">Credentials Submitted</div>
+        </div>
+        <div class="card widget">
+            <div class="widget-icon" style="background:rgba(102,126,234,0.15);color:#667eea;"><i class="fas fa-clipboard-check"></i></div>
+            <div class="widget-value" style="color:#667eea;">{{ assessments_count }}</div>
+            <div class="widget-label">Assessments Taken</div>
+        </div>
+        <div class="card widget">
+            <div class="widget-icon" style="background:rgba(67,233,123,0.15);color:#43e97b;"><i class="fas fa-shield-alt"></i></div>
+            <div class="widget-value" style="color:#43e97b;">{{ compliance_count }}</div>
+            <div class="widget-label">Compliance Modules</div>
+        </div>
+        <div class="card widget">
+            <div class="widget-icon" style="background:rgba(240,147,251,0.15);color:#f093fb;"><i class="fas fa-briefcase-medical"></i></div>
+            <div class="widget-value" style="color:#f093fb;">{{ recent_jobs|length }}</div>
+            <div class="widget-label">Latest Jobs</div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="grid-2 mb-4">
+        <div class="card">
+            <h3 style="margin-bottom:1.5rem;"><i class="fas fa-bolt" style="color:#f9d423;margin-right:0.5rem;"></i>Quick Actions</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+                <a href="{% url 'credentials:credential_submit' %}" class="btn btn-secondary"><i class="fas fa-plus"></i> Submit Credential</a>
+                <a href="{% url 'assessments:assessment_list' %}" class="btn btn-secondary"><i class="fas fa-stethoscope"></i> Take Assessment</a>
+                <a href="{% url 'compliance:module_list' %}" class="btn btn-secondary"><i class="fas fa-shield-alt"></i> Compliance Training</a>
+                <a href="{% url 'simulations:simulation_list' %}" class="btn btn-secondary"><i class="fas fa-user-md"></i> Practice Simulations</a>
+                <a href="{% url 'emr:emr_list' %}" class="btn btn-secondary"><i class="fas fa-laptop-medical"></i> EMR Test</a>
+                <a href="{% url 'jobs:job_list' %}" class="btn btn-secondary"><i class="fas fa-search"></i> Find Jobs</a>
+            </div>
+        </div>
+        <div class="card">
+            <h3 style="margin-bottom:1.5rem;"><i class="fas fa-briefcase-medical" style="color:#4facfe;margin-right:0.5rem;"></i>Latest Job Openings</h3>
+            {% for job in recent_jobs %}
+            <div style="display:flex;align-items:center;gap:1rem;padding:0.75rem;background:var(--bg-glass);border-radius:8px;margin-bottom:0.5rem;">
+                <i class="fas fa-hospital" style="color:var(--primary-light);"></i>
+                <div style="flex:1;">
+                    <div style="font-weight:600;font-size:0.9rem;">{{ job.title }}</div>
+                    <div style="color:var(--text-muted);font-size:0.8rem;">{{ job.hospital_name }} • {{ job.location }}</div>
+                </div>
+                {% if job.is_urgent %}<span class="badge badge-danger">Urgent</span>{% endif %}
+            </div>
+            {% empty %}
+            <p class="text-muted">No recent job openings. Check back soon!</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Profile Progress -->
+    <div class="card mb-4">
+        <h3 style="margin-bottom:1rem;"><i class="fas fa-chart-pie" style="color:#f093fb;margin-right:0.5rem;"></i>Career Readiness</h3>
+        <div class="grid-3">
+            <div>
+                <div class="flex-between mb-1"><span style="font-size:0.9rem;">Credentials</span><span style="color:var(--accent-teal);">{{ credentials_count }}/5</span></div>
+                <div class="progress-bar"><div class="progress-fill success" style="width:{% widthratio credentials_count 5 100 %}%;"></div></div>
+            </div>
+            <div>
+                <div class="flex-between mb-1"><span style="font-size:0.9rem;">Assessments</span><span style="color:var(--primary-light);">{{ assessments_count }}/10</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:{% widthratio assessments_count 10 100 %}%;"></div></div>
+            </div>
+            <div>
+                <div class="flex-between mb-1"><span style="font-size:0.9rem;">Compliance</span><span style="color:var(--accent-green);">{{ compliance_count }}/5</span></div>
+                <div class="progress-bar"><div class="progress-fill success" style="width:{% widthratio compliance_count 5 100 %}%;"></div></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}{{ assessment.title }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> <a href="{% url 'assessments:assessment_list' %}">Assessments</a> <i class="fas fa-chevron-right"></i> {{ assessment.title }}</div>
+    <h1>{{ assessment.title }}</h1>
+    <p>{{ assessment.description }}</p>
+</div>
+<div class="container">
+    <div class="quiz-container">
+        <div class="card mb-3" style="padding:1.5rem; position: sticky; top: 80px; z-index: 100;">
+            <div class="flex-between">
+                <div class="flex gap-2">
+                    <span class="badge badge-primary">{{ assessment.get_category_display }}</span>
+                    <span class="badge badge-info">{{ assessment.get_difficulty_display }}</span>
+                    <span class="badge badge-warning">{{ assessment.total_questions }} Questions</span>
+                </div>
+                <div class="timer-display" data-minutes="{{ assessment.time_limit_minutes }}" style="font-family:'Outfit';font-size:1.5rem;font-weight:700;color:#4facfe;">{{ assessment.time_limit_minutes }}:00</div>
+            </div>
+            <div class="progress-bar mt-2">
+                <div class="progress-fill success" id="assessment-progress" style="width: 0%;"></div>
+            </div>
+        </div>
+        <form method="post" class="quiz-form">
+            {% csrf_token %}
+            {% for question in questions %}
+            <div class="card question-card">
+                <div class="question-number">{{ forloop.counter }}</div>
+                <div class="question-text">{{ question.text }}</div>
+                <div class="options-list">
+                    {% if question.question_type == 'mcq' %}
+                    <div class="option-item"><input type="radio" name="question_{{ question.id }}" value="{{ question.option_a }}" id="q{{ question.id }}_a"><label for="q{{ question.id }}_a">{{ question.option_a }}</label></div>
+                    <div class="option-item"><input type="radio" name="question_{{ question.id }}" value="{{ question.option_b }}" id="q{{ question.id }}_b"><label for="q{{ question.id }}_b">{{ question.option_b }}</label></div>
+                    <div class="option-item"><input type="radio" name="question_{{ question.id }}" value="{{ question.option_c }}" id="q{{ question.id }}_c"><label for="q{{ question.id }}_c">{{ question.option_c }}</label></div>
+                    <div class="option-item"><input type="radio" name="question_{{ question.id }}" value="{{ question.option_d }}" id="q{{ question.id }}_d"><label for="q{{ question.id }}_d">{{ question.option_d }}</label></div>
+                    {% elif question.question_type == 'true_false' %}
+                    <div class="option-item"><input type="radio" name="question_{{ question.id }}" value="True" id="q{{ question.id }}_t"><label for="q{{ question.id }}_t">True</label></div>
+                    <div class="option-item"><input type="radio" name="question_{{ question.id }}" value="False" id="q{{ question.id }}_f"><label for="q{{ question.id }}_f">False</label></div>
+                    {% else %}
+                    <div class="form-group"><input type="text" name="question_{{ question.id }}" class="form-control" placeholder="Type your answer..."></div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary btn-lg" style="width:100%;"><i class="fas fa-check-circle"></i> Submit Assessment</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block extra_css %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const total = {{ questions|length }};
+        const inputs = document.querySelectorAll('input[type="radio"], input[type="text"]');
+        const progressBar = document.getElementById('assessment-progress');
+        
+        function updateProgress() {
+            let answered = 0;
+            const names = new Set();
+            inputs.forEach(i => names.add(i.name));
+            names.forEach(name => {
+                if(document.querySelector(`input[name="${name}"]:checked`) || (document.querySelector(`input[name="${name}"][type="text"]`) && document.querySelector(`input[name="${name}"][type="text"]`).value.trim() !== '')) {
+                    answered++;
+                }
+            });
+            progressBar.style.width = `${(answered / total) * 100}%`;
+        }
+
+        inputs.forEach(i => i.addEventListener('change', updateProgress));
+        inputs.forEach(i => i.addEventListener('keyup', updateProgress));
+
+        // Anti-cheat: Warn on tab switch
+        let warnings = 0;
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                warnings++;
+                alert(`Warning ${warnings}: Please do not switch tabs during the assessment. Multiple warnings may result in automatic failure.`);
+                if (warnings >= 3) {
+                    document.querySelector('.quiz-form').submit();
+                }
+            }
+        });
+
+        // Anti-cheat: Prevent refresh
+        window.addEventListener('beforeunload', function (e) {
+            e.preventDefault();
+            e.returnValue = '';
+        });
+        
+        // Disable warning on actual form submit
+        document.querySelector('.quiz-form').addEventListener('submit', () => {
+            window.onbeforeunload = null;
+        });
+    });
+</script>
+{% endblock %}

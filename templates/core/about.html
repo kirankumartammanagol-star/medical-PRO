@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}About Us{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> About</div>
+    <h1>About <span class="gradient-text">HealthCareer Pro</span></h1>
+    <p>Revolutionizing healthcare workforce recruitment and management</p>
+</div>
+<div class="container" style="max-width:1000px;">
+    <div class="card mb-4" style="padding:3rem;">
+        <h2 style="margin-bottom:1.5rem;">Our Mission</h2>
+        <p style="color:var(--text-secondary);font-size:1.05rem;line-height:1.8;">HealthCareer Pro is India's premier healthcare job portal designed to bridge the gap between qualified healthcare professionals and leading medical institutions. Unlike generic job portals, we focus exclusively on healthcare-specific capabilities including clinical credential verification, medical coding assessments, EMR/EHR competency testing, HIPAA compliance training, and clinical simulation interviews.</p>
+    </div>
+    <div class="grid-2 mb-4">
+        <div class="card"><div class="card-icon flex-center" style="background:rgba(102,126,234,0.15);color:#667eea;width:50px;height:50px;border-radius:12px;margin-bottom:1rem;"><i class="fas fa-bullseye"></i></div><h3>Vision</h3><p class="card-text" style="margin-top:0.75rem;">To create a world-class healthcare workforce ecosystem that ensures patient safety through verified credentials and continuous professional development.</p></div>
+        <div class="card"><div class="card-icon flex-center" style="background:rgba(0,212,170,0.15);color:#00d4aa;width:50px;height:50px;border-radius:12px;margin-bottom:1rem;"><i class="fas fa-rocket"></i></div><h3>Innovation</h3><p class="card-text" style="margin-top:0.75rem;">Leveraging AI and data analytics for workforce demand forecasting, automated credential verification, and intelligent job matching for healthcare professionals.</p></div>
+    </div>
+    <div class="card" style="padding:2rem;">
+        <h3 style="margin-bottom:1.5rem;">Key Differentiators</h3>
+        <div class="grid-3">
+            {% for item in "123456"|make_list %}
+            <div style="display:flex;align-items:flex-start;gap:0.75rem;">
+                <span class="badge badge-primary" style="min-width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;">{{ item }}</span>
+                <span style="font-size:0.9rem;color:var(--text-secondary);">
+                    {% if item == '1' %}Clinical credential verification with real-time license database integration
+                    {% elif item == '2' %}ICD-10, SNOMED CT, and healthcare coding assessments
+                    {% elif item == '3' %}EMR/EHR competency testing with HL7 FHIR standards
+                    {% elif item == '4' %}HIPAA compliance training and privacy assessments
+                    {% elif item == '5' %}Virtual patient simulations for interview preparation
+                    {% elif item == '6' %}AI-powered workforce demand forecasting and analytics
+                    {% endif %}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

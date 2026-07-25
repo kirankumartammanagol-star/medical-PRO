@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="HealthCareer Pro - Advanced Healthcare Job Portal with Clinical Credential Verification, Skill Assessments, EMR/EHR Competency Testing, and Workforce Demand Forecasting">
+    <title>{% block title %}HealthCareer Pro{% endblock %} | Healthcare Job Portal</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.1">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="{% url 'index' %}" class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h1>HealthCareer Pro</h1>
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="{% url 'index' %}"
+                        class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">Home</a></li>
+
+                <li class="nav-dropdown">
+                    <a href="#"
+                        class="{% if 'credentials' in request.path or 'assessments' in request.path %}active{% endif %}">
+                        Features <i class="fas fa-chevron-down" style="font-size:0.7rem;margin-left:3px;"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'credentials:credential_list' %}"><i class="fas fa-certificate"></i> Credential
+                            Verification</a>
+                        <a href="{% url 'assessments:assessment_list' %}"><i class="fas fa-stethoscope"></i> Skill
+                            Assessments</a>
+                        <a href="{% url 'emr:emr_list' %}"><i class="fas fa-laptop-medical"></i> EMR/EHR Competency</a>
+                        <a href="{% url 'compliance:module_list' %}"><i class="fas fa-shield-alt"></i> Compliance
+                            Training</a>
+                        <a href="{% url 'simulations:simulation_list' %}"><i class="fas fa-user-md"></i> Clinical
+                            Simulations</a>
+                        <a href="{% url 'workforce:demand_dashboard' %}"><i class="fas fa-chart-line"></i> Workforce
+                            Forecasting</a>
+                    </div>
+                </li>
+
+                <li><a href="{% url 'jobs:job_list' %}"
+                        class="{% if 'jobs' in request.path %}active{% endif %}">Jobs</a></li>
+                <li><a href="{% url 'jobs:partnerships' %}"
+                        class="{% if 'partnerships' in request.path %}active{% endif %}">Partnerships</a></li>
+                <li><a href="{% url 'about' %}"
+                        class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a></li>
+                <li><a href="{% url 'contact' %}"
+                        class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{% url 'logout' %}" class="btn btn-sm" style="color:var(--text-secondary);">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+                {% else %}
+                <a href="{% url 'login' %}" class="btn btn-secondary btn-sm">Sign In</a>
+                <a href="{% url 'register' %}" class="btn btn-primary btn-sm">Get Started</a>
+                {% endif %}
+                <button class="nav-menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div style="position:fixed;top:80px;right:20px;z-index:9999;max-width:400px;">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            <i
+                class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' or message.tags == 'danger' %}fa-exclamation-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %}"></i>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    {% block footer %}
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3><i class="fas fa-heartbeat"></i> HealthCareer Pro</h3>
+                <p>India's premier healthcare job portal connecting qualified healthcare professionals with leading
+                    hospitals, clinics, and medical institutions. Featuring advanced credential verification, clinical
+                    skill assessment, and workforce demand analytics.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>For Professionals</h4>
+                <ul>
+                    <li><a href="{% url 'jobs:job_list' %}">Browse Jobs</a></li>
+                    <li><a href="{% url 'credentials:credential_list' %}">My Credentials</a></li>
+                    <li><a href="{% url 'assessments:assessment_list' %}">Skill Assessments</a></li>
+                    <li><a href="{% url 'simulations:simulation_list' %}">Interview Prep</a></li>
+                    <li><a href="{% url 'compliance:module_list' %}">Compliance Training</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>For Hospitals</h4>
+                <ul>
+                    <li><a href="{% url 'workforce:demand_dashboard' %}">Workforce Analytics</a></li>
+                    <li><a href="{% url 'jobs:partnerships' %}">Partnerships</a></li>
+                    <li><a href="{% url 'credentials:verification_dashboard' %}">Verify Credentials</a></li>
+                    <li><a href="{% url 'emr:emr_list' %}">EMR Standards</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="{% url 'about' %}">About Us</a></li>
+                    <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 HealthCareer Pro. All rights reserved. Built for Healthcare Excellence.</p>
+            
+        </div>
+    </footer>
+    {% endblock %}
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

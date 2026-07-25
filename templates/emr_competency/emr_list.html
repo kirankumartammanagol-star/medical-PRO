@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}EMR/EHR Competency{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> EMR/EHR Competency</div>
+    <h1>EMR/EHR <span class="gradient-text">System Competency</span></h1>
+    <p>Test your proficiency in Electronic Medical Records and HL7 FHIR interoperability standards</p>
+</div>
+<div class="container">
+    {% if certifications %}<div class="card mb-4" style="padding:1.5rem;background:linear-gradient(135deg,rgba(67,233,123,0.1),rgba(56,249,215,0.05));border-color:rgba(67,233,123,0.3);">
+        <h3 style="color:#43e97b;margin-bottom:1rem;"><i class="fas fa-award" style="margin-right:0.5rem;"></i>Your Certifications</h3>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;">{% for cert in certifications %}<span class="badge badge-success" style="font-size:0.85rem;padding:0.5rem 1rem;"><i class="fas fa-certificate"></i> {{ cert.test.title }} — {{ cert.certificate_number }}</span>{% endfor %}</div>
+    </div>{% endif %}
+    <div class="flex-between mb-3 align-items-center">
+        <h3>Available Competency Tests</h3>
+        <a href="{% url 'emr:simulation' %}" class="btn btn-secondary"><i class="fas fa-desktop"></i> Open EMR Simulation Interface</a>
+    </div>
+    <div class="features-grid">
+        {% for test in tests %}
+        <div class="card feature-card">
+            <div class="feature-icon" style="background:rgba(240,147,251,0.15);color:#f093fb;"><i class="fas fa-laptop-medical"></i></div>
+            <h3>{{ test.title }}</h3>
+            <p>{{ test.description|truncatewords:20 }}</p>
+            <div style="display:flex;gap:0.5rem;margin:1rem 0;flex-wrap:wrap;">
+                <span class="badge badge-purple">{{ test.get_standard_display }}</span>
+                <span class="badge badge-info">{{ test.time_limit_minutes }} min</span>
+                <span class="badge badge-warning">Pass: {{ test.passing_score }}%</span>
+            </div>
+            <a href="{% url 'emr:competency_test' test.pk %}" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> Take Test</a>
+        </div>
+        {% empty %}
+        <div class="card text-center" style="grid-column:1/-1;padding:3rem;">
+            <i class="fas fa-laptop-medical" style="font-size:3rem;color:var(--text-muted);margin-bottom:1rem;"></i>
+            <h3>EMR Competency Tests Coming Soon</h3>
+            <p class="text-muted">Tests for HL7 FHIR, CDA, and EMR system proficiency are being prepared.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

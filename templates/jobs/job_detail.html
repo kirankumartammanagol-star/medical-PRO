@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}{{ job.title }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> <a href="{% url 'jobs:job_list' %}">Jobs</a> <i class="fas fa-chevron-right"></i> {{ job.title }}</div>
+    <h1>{{ job.title }}</h1>
+    <p>{{ job.hospital_name }} • {{ job.location }}</p>
+</div>
+<div class="container" style="max-width:1000px;">
+    <div class="grid-2 mb-4" style="grid-template-columns:2fr 1fr;">
+        <div class="card" style="padding:2rem;">
+            <h3 style="margin-bottom:1.5rem;">Job Description</h3>
+            <div style="color:var(--text-secondary);line-height:1.8;">{{ job.description|linebreaksbr }}</div>
+            <h4 style="margin:1.5rem 0 1rem;">Requirements</h4>
+            <div style="color:var(--text-secondary);line-height:1.8;">{{ job.requirements|linebreaksbr }}</div>
+            {% if job.credentials_required %}<h4 style="margin:1.5rem 0 1rem;">Required Credentials</h4><div style="color:var(--text-secondary);line-height:1.8;">{{ job.credentials_required|linebreaksbr }}</div>{% endif %}
+            {% if job.benefits %}<h4 style="margin:1.5rem 0 1rem;">Benefits</h4><div style="color:var(--text-secondary);line-height:1.8;">{{ job.benefits|linebreaksbr }}</div>{% endif %}
+        </div>
+        <div>
+            <div class="card mb-3" style="padding:1.5rem;">
+                <h4 style="margin-bottom:1rem;">Job Details</h4>
+                <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                    <div><span class="text-muted" style="font-size:0.85rem;">Specialty</span><br><span class="badge badge-primary">{{ job.get_specialty_display }}</span></div>
+                    <div><span class="text-muted" style="font-size:0.85rem;">Job Type</span><br><span class="badge badge-info">{{ job.get_job_type_display }}</span></div>
+                    <div><span class="text-muted" style="font-size:0.85rem;">Experience</span><br><span class="badge badge-warning">{{ job.get_experience_level_display }}</span></div>
+                    <div><span class="text-muted" style="font-size:0.85rem;">Salary Range</span><br><span style="font-weight:700;color:#43e97b;">{{ job.salary_range }}</span></div>
+                    {% if job.deadline %}<div><span class="text-muted" style="font-size:0.85rem;">Deadline</span><br><span>{{ job.deadline|date:"M d, Y" }}</span></div>{% endif %}
+                    <div><span class="text-muted" style="font-size:0.85rem;">Posted</span><br><span>{{ job.posted_date|timesince }} ago</span></div>
+                </div>
+            </div>
+            {% if has_applied %}
+            <div class="alert alert-success"><i class="fas fa-check-circle"></i> You have already applied</div>
+            {% else %}
+            <a href="{% url 'jobs:apply_job' job.pk %}" class="btn btn-primary btn-lg" style="width:100%;"><i class="fas fa-paper-plane"></i> Apply Now</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

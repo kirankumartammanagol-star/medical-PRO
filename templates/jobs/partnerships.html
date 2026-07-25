@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Hospital-Education Partnerships{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> Partnerships</div>
+    <h1>Hospital–Education <span class="gradient-text">Integration</span></h1>
+    <p>Connecting hospitals, medical colleges, and training institutions for seamless student-to-employment pipelines</p>
+</div>
+<div class="container">
+    <!-- Stats -->
+    <div class="grid-3 mb-4">
+        <div class="card widget text-center"><div class="widget-value" style="color:#667eea;">{{ stats.total_partnerships }}</div><div class="widget-label">Active Partnerships</div></div>
+        <div class="card widget text-center"><div class="widget-value" style="color:#43e97b;">{{ stats.total_students }}</div><div class="widget-label">Students Enrolled</div></div>
+        <div class="card widget text-center"><div class="widget-value" style="color:#f093fb;">{{ stats.avg_placement }}%</div><div class="widget-label">Avg Placement Rate</div></div>
+    </div>
+
+    <!-- Partnerships -->
+    <h3 class="mb-3">Active Partnership Programs</h3>
+    {% if partnerships %}
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+        {% for p in partnerships %}
+        <div class="card partnership-card">
+            <div class="partner-logos">
+                <div class="partner-logo" style="background:var(--primary-gradient);">H</div>
+                <span class="partner-arrow"><i class="fas fa-exchange-alt"></i></span>
+                <div class="partner-logo" style="background:linear-gradient(135deg,#43e97b,#38f9d7);color:#0f0f23;">C</div>
+            </div>
+            <div style="flex:1;">
+                <h4>{{ p.hospital_name }} ↔ {{ p.college_name }}</h4>
+                <div style="display:flex;gap:0.5rem;margin:0.5rem 0;flex-wrap:wrap;">
+                    <span class="badge badge-primary">{{ p.get_program_type_display }}</span>
+                    <span class="badge badge-info">{{ p.students_enrolled }} Students</span>
+                    <span class="badge badge-success">{{ p.placement_rate }}% Placement</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% elif sample_partnerships %}
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+        {% for p in sample_partnerships %}
+        <div class="card partnership-card">
+            <div class="partner-logos">
+                <div class="partner-logo" style="background:var(--primary-gradient);">H</div>
+                <span class="partner-arrow"><i class="fas fa-exchange-alt"></i></span>
+                <div class="partner-logo" style="background:linear-gradient(135deg,#43e97b,#38f9d7);color:#0f0f23;">C</div>
+            </div>
+            <div style="flex:1;">
+                <h4>{{ p.hospital_name }} ↔ {{ p.college_name }}</h4>
+                <div style="display:flex;gap:0.5rem;margin:0.5rem 0;flex-wrap:wrap;">
+                    <span class="badge badge-primary">{{ p.program_type }}</span>
+                    <span class="badge badge-info">{{ p.students_enrolled }} Students</span>
+                    <span class="badge badge-success">{{ p.placement_rate }}% Placement</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- How It Works -->
+    <div class="card mt-4" style="padding:2rem;">
+        <h3 style="margin-bottom:1.5rem;">How Hospital–Education Integration Works</h3>
+        <div class="grid-3">
+            <div class="text-center">
+                <div style="width:60px;height:60px;background:rgba(102,126,234,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.3rem;color:#667eea;"><i class="fas fa-university"></i></div>
+                <h4 style="font-size:1rem;">Medical Colleges</h4>
+                <p class="text-muted" style="font-size:0.85rem;margin-top:0.5rem;">Register students and training programs on the platform</p>
+            </div>
+            <div class="text-center">
+                <div style="width:60px;height:60px;background:rgba(0,212,170,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.3rem;color:#00d4aa;"><i class="fas fa-handshake"></i></div>
+                <h4 style="font-size:1rem;">Partnership Matching</h4>
+                <p class="text-muted" style="font-size:0.85rem;margin-top:0.5rem;">AI matches colleges with hospitals based on specialties and needs</p>
+            </div>
+            <div class="text-center">
+                <div style="width:60px;height:60px;background:rgba(67,233,123,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.3rem;color:#43e97b;"><i class="fas fa-briefcase-medical"></i></div>
+                <h4 style="font-size:1rem;">Direct Employment</h4>
+                <p class="text-muted" style="font-size:0.85rem;margin-top:0.5rem;">Students transition seamlessly from education to employment</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

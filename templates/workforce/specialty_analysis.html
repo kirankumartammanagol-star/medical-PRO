@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Specialty Analysis{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> <a href="{% url 'workforce:demand_dashboard' %}">Workforce</a> <i class="fas fa-chevron-right"></i> Specialty Analysis</div>
+    <h1>Specialty <span class="gradient-text">Analysis</span></h1>
+</div>
+<div class="container">
+    <div class="filters-bar">
+        <i class="fas fa-filter" style="color:var(--primary-light);"></i>
+        <span style="font-weight:600;">Specialty: </span>
+        <select class="form-control" onchange="window.location.href='?specialty='+this.value" style="max-width:250px;">
+            {% for code, name in specialties %}
+            <option value="{{ code }}" {% if code == selected_specialty %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Trend Chart -->
+    <div class="card chart-card mb-4">
+        <h3>Demand vs Supply Trend</h3>
+        <p class="text-muted" style="font-size:0.85rem;">Historical trend analysis showing workforce dynamics</p>
+        <div class="chart-container">
+            <canvas id="trendChart"></canvas>
+        </div>
+        <script type="application/json" id="trendLabels">{{ trend_data.labels|safe }}</script>
+        <script type="application/json" id="trendDemand">{{ trend_data.demand|safe }}</script>
+        <script type="application/json" id="trendSupply">{{ trend_data.supply|safe }}</script>
+        <div style="display:flex;gap:1.5rem;margin-top:1rem;justify-content:center;">
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-muted);"><div style="width:12px;height:12px;background:#667eea;border-radius:50%;"></div>Demand</div>
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-muted);"><div style="width:12px;height:12px;background:#00d4aa;border-radius:50%;"></div>Supply</div>
+        </div>
+    </div>
+
+    <!-- Regional Data -->
+    <div class="card">
+        <h3 style="margin-bottom:1.5rem;">Regional Distribution</h3>
+        <div class="table-container" style="border:none;">
+            <table><thead><tr><th>Region</th><th>Demand</th><th>Supply</th><th>Shortage</th><th>Gap %</th></tr></thead><tbody>
+                {% for r in regions %}<tr>
+                    <td style="font-weight:600;">{{ r.name }}</td>
+                    <td>{{ r.demand }}</td>
+                    <td>{{ r.supply }}</td>
+                    <td style="font-weight:700;color:#fa709a;">{{ r.shortage }}</td>
+                    <td>
+                        <div class="progress-bar" style="width:150px;height:6px;display:inline-block;vertical-align:middle;margin-right:0.5rem;">
+                            <div class="progress-fill {% if r.shortage > 1000 %}danger{% elif r.shortage > 500 %}warning{% else %}success{% endif %}" style="width:{% widthratio r.shortage r.demand 100 %}%;"></div>
+                        </div>
+                        <span style="font-size:0.85rem;color:var(--text-muted);">{% widthratio r.shortage r.demand 100 %}%</span>
+                    </td>
+                </tr>{% endfor %}</tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

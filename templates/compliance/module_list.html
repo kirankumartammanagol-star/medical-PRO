@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Compliance Training{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> Compliance</div>
+    <h1>Compliance & <span class="gradient-text">Regulatory Training</span></h1>
+    <p>HIPAA compliance modules, privacy awareness assessments, and regulatory knowledge evaluation</p>
+</div>
+<div class="container">
+    <div class="grid-3 mb-4">
+        <div class="card widget text-center"><div class="widget-value" style="color:#667eea;">{{ stats.total_modules }}</div><div class="widget-label">Total Modules</div></div>
+        <div class="card widget text-center"><div class="widget-value" style="color:#43e97b;">{{ stats.completed }}</div><div class="widget-label">Completed</div></div>
+        <div class="card widget text-center"><div class="widget-value" style="color:#f9d423;">{{ stats.mandatory }}</div><div class="widget-label">Mandatory</div></div>
+    </div>
+    <div class="features-grid">
+        {% for module in modules %}
+        <div class="card feature-card">
+            <div class="flex-between">
+                <div class="feature-icon" style="background:rgba(79,172,254,0.15);color:#4facfe;"><i class="fas {{ module.icon }}"></i></div>
+                {% if module.id in completed_ids %}<span class="badge badge-success"><i class="fas fa-check"></i> Completed</span>{% elif module.is_mandatory %}<span class="badge badge-danger">Mandatory</span>{% endif %}
+            </div>
+            <h3>{{ module.title }}</h3>
+            <p>{{ module.description|truncatewords:20 }}</p>
+            <div style="display:flex;gap:0.5rem;margin:1rem 0;flex-wrap:wrap;">
+                <span class="badge badge-info">{{ module.get_regulation_display|truncatewords:3 }}</span>
+                <span class="badge badge-warning">{{ module.duration_minutes }} min</span>
+                <span class="badge badge-primary">Pass: {{ module.required_score }}%</span>
+            </div>
+            <a href="{% url 'compliance:training_module' module.pk %}" class="btn btn-primary btn-sm" style="margin-top:auto;"><i class="fas fa-book-open"></i> Start Training</a>
+        </div>
+        {% empty %}
+        <div class="card text-center" style="grid-column:1/-1;padding:3rem;">
+            <i class="fas fa-shield-alt" style="font-size:3rem;color:var(--text-muted);margin-bottom:1rem;"></i>
+            <h3>Compliance Modules Coming Soon</h3>
+            <p class="text-muted">HIPAA, OSHA, and regulatory training modules are being prepared.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

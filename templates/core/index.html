@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1>
+                Transform Your<br>
+                <span class="gradient-text">Healthcare Career</span><br>
+                Journey Today
+            </h1>
+            <p>India's most advanced healthcare job portal with AI-powered credential verification, clinical skill assessments, EMR/EHR competency testing, and workforce demand analytics.</p>
+            
+            <div class="hero-buttons">
+                <a href="{% url 'register' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-rocket"></i> Get Started Free
+                </a>
+                <a href="{% url 'jobs:job_list' %}" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-briefcase-medical"></i> Browse Jobs
+                </a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="stat-number">{{ stats.total_hospitals }}+</div>
+                    <div class="stat-label">Partner Hospitals</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="stat-number">{{ stats.total_jobs }}+</div>
+                    <div class="stat-label">Active Jobs</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="stat-number">{{ stats.total_professionals }}+</div>
+                    <div class="stat-label">Professionals</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="stat-number">{{ stats.total_colleges }}+</div>
+                    <div class="stat-label">Medical Colleges</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="hero-graphic">
+                <div class="hero-card-floating">
+                    <div style="margin-bottom:1.5rem;">
+                        <span class="pulse-dot"></span>
+                        <span style="font-weight:600;color:#43e97b;">Live Portal Status</span>
+                    </div>
+                    <div style="display:grid;gap:1rem;">
+                        <div style="display:flex;align-items:center;gap:1rem;padding:0.75rem;background:rgba(255,255,255,0.05);border-radius:8px;">
+                            <i class="fas fa-certificate" style="color:#00d4aa;font-size:1.2rem;"></i>
+                            <div>
+                                <div style="font-weight:600;font-size:0.9rem;">Credentials Verified</div>
+                                <div style="color:var(--text-muted);font-size:0.8rem;">Real-time verification</div>
+                            </div>
+                            <span class="badge badge-success" style="margin-left:auto;">Active</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:1rem;padding:0.75rem;background:rgba(255,255,255,0.05);border-radius:8px;">
+                            <i class="fas fa-stethoscope" style="color:#667eea;font-size:1.2rem;"></i>
+                            <div>
+                                <div style="font-weight:600;font-size:0.9rem;">Skills Assessment</div>
+                                <div style="color:var(--text-muted);font-size:0.8rem;">ICD-10 & SNOMED CT</div>
+                            </div>
+                            <span class="badge badge-info" style="margin-left:auto;">Online</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:1rem;padding:0.75rem;background:rgba(255,255,255,0.05);border-radius:8px;">
+                            <i class="fas fa-chart-line" style="color:#f093fb;font-size:1.2rem;"></i>
+                            <div>
+                                <div style="font-weight:600;font-size:0.9rem;">Workforce Analytics</div>
+                                <div style="color:var(--text-muted);font-size:0.8rem;">Demand forecasting</div>
+                            </div>
+                            <span class="badge badge-purple" style="margin-left:auto;">Live</span>
+                        </div>
+                    </div>
+
+                    <div class="floating-badge badge-1">
+                        <i class="fas fa-check-circle" style="color:#43e97b;"></i>
+                        <span>HIPAA Compliant</span>
+                    </div>
+                    <div class="floating-badge badge-2">
+                        <i class="fas fa-hospital" style="color:#4facfe;"></i>
+                        <span>150+ Hospitals</span>
+                    </div>
+                    <div class="floating-badge badge-3">
+                        <i class="fas fa-shield-alt" style="color:#f9d423;"></i>
+                        <span>Verified Platform</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="section" id="features">
+    <div class="section-header">
+        <span class="section-label">Our Features</span>
+        <h2>Healthcare-Specific <span class="gradient-text">Capabilities</span></h2>
+        <p>Comprehensive tools designed specifically for healthcare workforce management and professional development.</p>
+    </div>
+
+    <div class="features-grid">
+        {% for feature in features %}
+        <div class="card feature-card fade-in stagger-{{ forloop.counter }}">
+            <div class="feature-icon" style="background:{{ feature.color }}20;color:{{ feature.color }};">
+                <i class="fas {{ feature.icon }}"></i>
+            </div>
+            <h3>{{ feature.title }}</h3>
+            <p>{{ feature.description }}</p>
+            <a href="#" class="feature-link">
+                Learn More <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="section" style="background:var(--bg-secondary);">
+    <div class="section-header">
+        <span class="section-label">Why Choose Us</span>
+        <h2>Trusted by <span class="gradient-text">Healthcare Leaders</span></h2>
+    </div>
+
+    <div class="stats-bar">
+        <div class="card stat-card">
+            <div class="stat-icon" style="background:rgba(0,212,170,0.15);color:#00d4aa;">
+                <i class="fas fa-hospital"></i>
+            </div>
+            <div class="stat-value" style="color:#00d4aa;">150+</div>
+            <div class="stat-label">Partner Hospitals</div>
+        </div>
+        <div class="card stat-card">
+            <div class="stat-icon" style="background:rgba(102,126,234,0.15);color:#667eea;">
+                <i class="fas fa-user-md"></i>
+            </div>
+            <div class="stat-value" style="color:#667eea;">5000+</div>
+            <div class="stat-label">Healthcare Professionals</div>
+        </div>
+        <div class="card stat-card">
+            <div class="stat-icon" style="background:rgba(240,147,251,0.15);color:#f093fb;">
+                <i class="fas fa-certificate"></i>
+            </div>
+            <div class="stat-value" style="color:#f093fb;">3200+</div>
+            <div class="stat-label">Credentials Verified</div>
+        </div>
+        <div class="card stat-card">
+            <div class="stat-icon" style="background:rgba(67,233,123,0.15);color:#43e97b;">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="stat-value" style="color:#43e97b;">75+</div>
+            <div class="stat-label">Partner Colleges</div>
+        </div>
+    </div>
+</section>
+
+<!-- Healthcare Standards Section -->
+<section class="section">
+    <div class="section-header">
+        <span class="section-label">Standards Compliance</span>
+        <h2>Built on <span class="gradient-text">Healthcare Standards</span></h2>
+        <p>Our platform integrates with globally recognized healthcare standards and coding systems.</p>
+    </div>
+
+    <div class="container">
+        <div class="grid-3">
+            <div class="card text-center">
+                <div class="card-icon flex-center" style="background:rgba(102,126,234,0.15);color:#667eea;width:60px;height:60px;border-radius:12px;margin:0 auto 1rem;">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>ICD-10</h3>
+                <p class="card-text" style="margin-top:0.5rem;">International Classification of Diseases - medical coding assessment for accurate healthcare billing and documentation.</p>
+            </div>
+            <div class="card text-center">
+                <div class="card-icon flex-center" style="background:rgba(0,212,170,0.15);color:#00d4aa;width:60px;height:60px;border-radius:12px;margin:0 auto 1rem;">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3>SNOMED CT</h3>
+                <p class="card-text" style="margin-top:0.5rem;">Systematized Nomenclature of Medicine - Clinical Terms. Comprehensive clinical terminology knowledge assessment.</p>
+            </div>
+            <div class="card text-center">
+                <div class="card-icon flex-center" style="background:rgba(240,147,251,0.15);color:#f093fb;width:60px;height:60px;border-radius:12px;margin:0 auto 1rem;">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <h3>HL7 FHIR</h3>
+                <p class="card-text" style="margin-top:0.5rem;">Fast Healthcare Interoperability Resources - EMR/EHR system interoperability standards evaluation.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section" style="text-align:center;">
+    <div class="container-sm" style="margin:0 auto;">
+        <div class="card" style="padding:3rem;background:linear-gradient(135deg,rgba(102,126,234,0.15),rgba(0,212,170,0.1));">
+            <h2 style="margin-bottom:1rem;">Ready to Advance Your Healthcare Career?</h2>
+            <p style="color:var(--text-secondary);margin-bottom:2rem;font-size:1.1rem;">Join thousands of healthcare professionals who trust HealthCareer Pro for credential verification, career growth, and finding the right opportunities.</p>
+            <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+                <a href="{% url 'register' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus"></i> Create Free Account
+                </a>
+                <a href="{% url 'about' %}" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-info-circle"></i> Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

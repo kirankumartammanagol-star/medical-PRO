@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Clinical Assessments{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> Assessments</div>
+    <h1>Clinical <span class="gradient-text">Skill Assessment</span></h1>
+    <p>Test your knowledge in medical coding (ICD-10), SNOMED CT, clinical decision-making, and more</p>
+</div>
+<div class="container">
+    <div class="filters-bar">
+        <i class="fas fa-filter" style="color:var(--primary-light);"></i>
+        <span style="font-weight:600;">Filter by: </span>
+        <a href="{% url 'assessments:assessment_list' %}" class="btn btn-sm {% if not selected_category %}btn-primary{% else %}btn-secondary{% endif %}">All</a>
+        {% for code, name in categories %}
+        <a href="?category={{ code }}" class="btn btn-sm {% if selected_category == code %}btn-primary{% else %}btn-secondary{% endif %}">{{ name }}</a>
+        {% endfor %}
+    </div>
+    <div class="features-grid">
+        {% for assessment in assessments %}
+        <div class="card feature-card searchable-card">
+            <div class="flex-between">
+                <div class="feature-icon" style="background:rgba(102,126,234,0.15);color:#667eea;"><i class="fas {{ assessment.icon }}"></i></div>
+                {% if assessment.id in completed_ids %}<span class="badge badge-success"><i class="fas fa-check"></i> Completed</span>{% endif %}
+            </div>
+            <h3>{{ assessment.title }}</h3>
+            <p>{{ assessment.description|truncatewords:20 }}</p>
+            <div style="display:flex;gap:0.5rem;margin:1rem 0;flex-wrap:wrap;">
+                <span class="badge badge-primary">{{ assessment.get_category_display }}</span>
+                <span class="badge badge-info">{{ assessment.get_difficulty_display }}</span>
+                <span class="badge badge-warning">{{ assessment.time_limit_minutes }} min</span>
+            </div>
+            <div class="flex-between" style="margin-top:auto;">
+                <span style="font-size:0.85rem;color:var(--text-muted);">{{ assessment.total_questions }} Questions • Pass: {{ assessment.passing_score }}%</span>
+                <a href="{% url 'assessments:take_assessment' assessment.pk %}" class="btn btn-primary btn-sm"><i class="fas fa-play"></i> Start</a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="card text-center" style="grid-column:1/-1;padding:3rem;">
+            <i class="fas fa-clipboard-check" style="font-size:3rem;color:var(--text-muted);margin-bottom:1rem;"></i>
+            <h3>No Assessments Available</h3>
+            <p class="text-muted">New clinical assessments are being prepared. Check back soon!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

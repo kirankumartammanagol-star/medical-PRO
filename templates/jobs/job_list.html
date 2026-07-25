@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Healthcare Jobs{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> Job Listings</div>
+    <h1>Healthcare <span class="gradient-text">Job Listings</span></h1>
+    <p>Find your next healthcare career opportunity</p>
+</div>
+<div class="container">
+    <!-- Filters -->
+    <form method="get" class="filters-bar">
+        <i class="fas fa-search" style="color:var(--primary-light);"></i>
+        <select name="specialty" class="form-control"><option value="">All Specialties</option>
+            {% for code, name in specialties %}<option value="{{ code }}" {% if selected_specialty == code %}selected{% endif %}>{{ name }}</option>{% endfor %}
+        </select>
+        <select name="job_type" class="form-control"><option value="">All Types</option>
+            {% for code, name in job_types %}<option value="{{ code }}" {% if selected_type == code %}selected{% endif %}>{{ name }}</option>{% endfor %}
+        </select>
+        <select name="experience" class="form-control"><option value="">All Levels</option>
+            {% for code, name in experience_levels %}<option value="{{ code }}" {% if selected_experience == code %}selected{% endif %}>{{ name }}</option>{% endfor %}
+        </select>
+        <input type="text" name="location" class="form-control" placeholder="Location..." value="{{ selected_location }}" style="max-width:160px;">
+        <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Search</button>
+    </form>
+
+    <!-- Job Listings -->
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+        {% for job in jobs %}
+        <div class="card job-card searchable-card">
+            <div class="job-icon"><i class="fas fa-hospital"></i></div>
+            <div class="job-info" style="flex:1;">
+                <div class="flex-between"><h3><a href="{% url 'jobs:job_detail' job.pk %}" style="color:var(--text-primary);">{{ job.title }}</a></h3>{% if job.is_urgent %}<span class="badge badge-danger"><i class="fas fa-bolt"></i> Urgent</span>{% endif %}</div>
+                <div class="job-meta">
+                    <span><i class="fas fa-hospital"></i> {{ job.hospital_name }}</span>
+                    <span><i class="fas fa-map-marker-alt"></i> {{ job.location }}</span>
+                    <span><i class="fas fa-money-bill-wave"></i> {{ job.salary_range }}</span>
+                    <span><i class="fas fa-clock"></i> {{ job.posted_date|timesince }} ago</span>
+                </div>
+                <div class="job-tags">
+                    <span class="badge badge-primary">{{ job.get_specialty_display }}</span>
+                    <span class="badge badge-info">{{ job.get_job_type_display }}</span>
+                    <span class="badge badge-warning">{{ job.get_experience_level_display }}</span>
+                </div>
+            </div>
+            <a href="{% url 'jobs:job_detail' job.pk %}" class="btn btn-primary btn-sm" style="align-self:center;">View Details</a>
+        </div>
+        {% empty %}
+        <!-- Show sample jobs if no database jobs -->
+        {% if sample_jobs %}
+        {% for job in sample_jobs %}
+        <div class="card job-card searchable-card">
+            <div class="job-icon"><i class="fas fa-hospital"></i></div>
+            <div class="job-info" style="flex:1;">
+                <div class="flex-between"><h3>{{ job.title }}</h3>{% if job.is_urgent %}<span class="badge badge-danger"><i class="fas fa-bolt"></i> Urgent</span>{% endif %}</div>
+                <div class="job-meta">
+                    <span><i class="fas fa-hospital"></i> {{ job.hospital_name }}</span>
+                    <span><i class="fas fa-map-marker-alt"></i> {{ job.location }}</span>
+                    <span><i class="fas fa-money-bill-wave"></i> {{ job.salary_range }}</span>
+                    <span><i class="fas fa-clock"></i> {{ job.posted_date }}</span>
+                </div>
+                <div class="job-tags">
+                    <span class="badge badge-primary">{{ job.specialty }}</span>
+                    <span class="badge badge-info">{{ job.job_type }}</span>
+                    <span class="badge badge-warning">{{ job.experience_level }}</span>
+                </div>
+            </div>
+            <span class="btn btn-secondary btn-sm" style="align-self:center;">Sample</span>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

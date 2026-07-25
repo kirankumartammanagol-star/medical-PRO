@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}{{ module.title }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> <a href="{% url 'compliance:module_list' %}">Compliance</a> <i class="fas fa-chevron-right"></i> {{ module.title }}</div>
+    <h1>{{ module.title }}</h1>
+    <p>{{ module.get_regulation_display }}</p>
+</div>
+<div class="container">
+    <div class="grid-2 mb-4">
+        <div class="card" style="padding:2rem;">
+            <h3 style="margin-bottom:1rem;"><i class="fas fa-book" style="color:var(--primary-light);margin-right:0.5rem;"></i>Training Content</h3>
+            <div style="color:var(--text-secondary);line-height:1.8;">{{ module.content|safe|default:"<p>This compliance training module covers essential healthcare regulations, privacy standards, and ethical guidelines that all healthcare professionals must understand and follow.</p><h4 style='color:white;margin:1rem 0 0.5rem;'>Key Learning Objectives:</h4><ul><li>Understanding patient privacy rights and data protection</li><li>Recognizing potential compliance violations</li><li>Proper handling of Protected Health Information (PHI)</li><li>Reporting procedures for compliance concerns</li><li>Documentation and record-keeping requirements</li></ul><h4 style='color:white;margin:1rem 0 0.5rem;'>Regulations Covered:</h4><ul><li>HIPAA Privacy Rule</li><li>HIPAA Security Rule</li><li>HITECH Act requirements</li><li>State-specific healthcare regulations</li></ul>" }}</div>
+        </div>
+        <div class="card" style="padding:2rem;">
+            <div class="flex-between align-items-center mb-3">
+                <div>
+                    <h3 style="margin-bottom:0;"><i class="fas fa-question-circle" style="color:#f9d423;margin-right:0.5rem;"></i>Compliance Quiz</h3>
+                    <p class="text-muted mt-1" style="font-size: 0.85rem;">Required score: {{ module.required_score }}%</p>
+                </div>
+                <div class="timer-display" data-minutes="{{ module.duration_minutes }}" style="font-family:'Outfit';font-size:1.5rem;font-weight:700;color:#f9d423;">{{ module.duration_minutes }}:00</div>
+            </div>
+            <div class="progress-bar mb-4">
+                <div class="progress-fill" id="assessment-progress" style="width: 0%; background: #f9d423;"></div>
+            </div>
+            <form method="post" class="quiz-form">
+                {% csrf_token %}
+                {% for q in questions %}
+                <div style="margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border-color);">
+                    <div class="question-text" style="font-size:0.95rem;">{{ forloop.counter }}. {{ q.question }}</div>
+                    <div class="options-list" style="margin-top:0.75rem;">
+                        <div class="option-item" style="padding:0.6rem 1rem;"><input type="radio" name="question_{{ q.id }}" value="A" id="cq{{ q.id }}_a"><label for="cq{{ q.id }}_a">{{ q.option_a }}</label></div>
+                        <div class="option-item" style="padding:0.6rem 1rem;"><input type="radio" name="question_{{ q.id }}" value="B" id="cq{{ q.id }}_b"><label for="cq{{ q.id }}_b">{{ q.option_b }}</label></div>
+                        <div class="option-item" style="padding:0.6rem 1rem;"><input type="radio" name="question_{{ q.id }}" value="C" id="cq{{ q.id }}_c"><label for="cq{{ q.id }}_c">{{ q.option_c }}</label></div>
+                        <div class="option-item" style="padding:0.6rem 1rem;"><input type="radio" name="question_{{ q.id }}" value="D" id="cq{{ q.id }}_d"><label for="cq{{ q.id }}_d">{{ q.option_d }}</label></div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-muted">Quiz questions are being prepared for this module.</p>
+                {% endfor %}
+                {% if questions %}<button type="submit" class="btn btn-primary" style="width:100%;"><i class="fas fa-check-circle"></i> Submit Quiz</button>{% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_css %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const total = {{ questions|length }};
+        const inputs = document.querySelectorAll('input[type="radio"]');
+        const progressBar = document.getElementById('assessment-progress');
+        
+        function updateProgress() {
+            let answered = 0;
+            const names = new Set();
+            inputs.forEach(i => names.add(i.name));
+            names.forEach(name => {
+                if(document.querySelector(`input[name="${name}"]:checked`)) {
+                    answered++;
+                }
+            });
+            progressBar.style.width = `${(answered / total) * 100}%`;
+        }
+
+        inputs.forEach(i => i.addEventListener('change', updateProgress));
+
+        // Anti-cheat: Warn on tab switch
+        let warnings = 0;
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                warnings++;
+                alert(`Warning ${warnings}: Please do not switch tabs during compliance training. Multiple warnings may result in automatic failure.`);
+                if (warnings >= 3) {
+                    document.querySelector('.quiz-form').submit();
+                }
+            }
+        });
+
+        // Anti-cheat: Prevent refresh
+        window.addEventListener('beforeunload', function (e) {
+            e.preventDefault();
+            e.returnValue = '';
+        });
+        
+        // Disable warning on actual form submit
+        if(document.querySelector('.quiz-form')) {
+            document.querySelector('.quiz-form').addEventListener('submit', () => {
+                window.onbeforeunload = null;
+            });
+        }
+    });
+</script>
+{% endblock %}

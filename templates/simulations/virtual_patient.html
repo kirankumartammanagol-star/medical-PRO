@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block title %}{{ simulation.title }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> <a href="{% url 'simulations:simulation_list' %}">Simulations</a> <i class="fas fa-chevron-right"></i> {{ simulation.title }}</div>
+    <h1>{{ simulation.title }}</h1>
+</div>
+<div class="container" style="max-width:1000px;">
+    <!-- Patient Card -->
+    <div class="patient-card mb-4">
+        <h3><i class="fas fa-user-injured" style="margin-right:0.5rem;color:#00b4d8;"></i>Patient Information</h3>
+        <div class="patient-info-grid">
+            <div class="patient-info-item"><div class="label">Name</div><div class="value">{{ simulation.patient_name }}</div></div>
+            <div class="patient-info-item"><div class="label">Age</div><div class="value">{{ simulation.patient_age }} years</div></div>
+            <div class="patient-info-item"><div class="label">Gender</div><div class="value">{{ simulation.patient_gender }}</div></div>
+            <div class="patient-info-item"><div class="label">Scenario Type</div><div class="value">{{ simulation.get_scenario_type_display }}</div></div>
+        </div>
+    </div>
+    <!-- Clinical Details -->
+    <div class="grid-2 mb-4">
+        <div class="card" style="padding:1.5rem;">
+            <h4 style="margin-bottom:1rem;color:#48cae4;"><i class="fas fa-notes-medical" style="margin-right:0.5rem;"></i>Presenting Symptoms</h4>
+            <p style="color:var(--text-secondary);line-height:1.7;">{{ simulation.presenting_symptoms }}</p>
+        </div>
+        <div class="card" style="padding:1.5rem;">
+            <h4 style="margin-bottom:1rem;color:#48cae4;"><i class="fas fa-history" style="margin-right:0.5rem;"></i>Patient History</h4>
+            <p style="color:var(--text-secondary);line-height:1.7;">{{ simulation.patient_history|default:"No significant past medical history reported." }}</p>
+        </div>
+    </div>
+    <!-- Simulation Steps -->
+    <div class="card" style="padding:2rem;">
+        <div class="flex-between align-items-center mb-3">
+            <h3 style="margin-bottom:0;"><i class="fas fa-clipboard-list" style="color:var(--primary-light);margin-right:0.5rem;"></i>Clinical Decision Steps</h3>
+            <div class="timer-display" data-minutes="{{ simulation.time_limit_minutes }}" style="font-family:'Outfit';font-size:1.5rem;font-weight:700;color:#00b4d8;">{{ simulation.time_limit_minutes }}:00</div>
+        </div>
+        <div class="progress-bar mb-4">
+            <div class="progress-fill" id="assessment-progress" style="width: 0%; background: #00b4d8;"></div>
+        </div>
+        <form method="post" class="quiz-form">
+            {% csrf_token %}
+            {% for step in steps %}
+            <div style="margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid var(--border-color);">
+                <div style="display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem;">
+                    <div class="question-number">{{ step.step_number }}</div>
+                    <div>
+                        <p style="color:var(--text-secondary);margin-bottom:0.5rem;font-size:0.9rem;">{{ step.description }}</p>
+                        <div class="question-text">{{ step.question }}</div>
+                    </div>
+                </div>
+                <div class="options-list">
+                    <div class="option-item"><input type="radio" name="step_{{ step.id }}" value="A" id="s{{ step.id }}_a"><label for="s{{ step.id }}_a">{{ step.option_a }}</label></div>
+                    <div class="option-item"><input type="radio" name="step_{{ step.id }}" value="B" id="s{{ step.id }}_b"><label for="s{{ step.id }}_b">{{ step.option_b }}</label></div>
+                    <div class="option-item"><input type="radio" name="step_{{ step.id }}" value="C" id="s{{ step.id }}_c"><label for="s{{ step.id }}_c">{{ step.option_c }}</label></div>
+                    <div class="option-item"><input type="radio" name="step_{{ step.id }}" value="D" id="s{{ step.id }}_d"><label for="s{{ step.id }}_d">{{ step.option_d }}</label></div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted text-center">Simulation steps are being prepared for this scenario.</p>
+            {% endfor %}
+            {% if steps %}<button type="submit" class="btn btn-primary btn-lg" style="width:100%;"><i class="fas fa-check-circle"></i> Complete Simulation</button>{% endif %}
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block extra_css %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const total = {{ steps|length }};
+        const inputs = document.querySelectorAll('input[type="radio"]');
+        const progressBar = document.getElementById('assessment-progress');
+        
+        function updateProgress() {
+            let answered = 0;
+            const names = new Set();
+            inputs.forEach(i => names.add(i.name));
+            names.forEach(name => {
+                if(document.querySelector(`input[name="${name}"]:checked`)) {
+                    answered++;
+                }
+            });
+            progressBar.style.width = `${(answered / total) * 100}%`;
+        }
+
+        inputs.forEach(i => i.addEventListener('change', updateProgress));
+
+        // Anti-cheat: Warn on tab switch
+        let warnings = 0;
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                warnings++;
+                alert(`Warning ${warnings}: Please do not switch tabs during a clinical simulation. Multiple warnings may result in automatic failure and poor competency rating.`);
+                if (warnings >= 3) {
+                    document.querySelector('.quiz-form').submit();
+                }
+            }
+        });
+
+        // Anti-cheat: Prevent refresh
+        window.addEventListener('beforeunload', function (e) {
+            e.preventDefault();
+            e.returnValue = '';
+        });
+        
+        // Disable warning on actual form submit
+        if(document.querySelector('.quiz-form')) {
+            document.querySelector('.quiz-form').addEventListener('submit', () => {
+                window.onbeforeunload = null;
+            });
+        }
+    });
+</script>
+{% endblock %}

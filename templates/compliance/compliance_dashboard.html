@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Compliance Dashboard{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> <a href="{% url 'compliance:module_list' %}">Compliance</a> <i class="fas fa-chevron-right"></i> Dashboard</div>
+    <h1>Compliance <span class="gradient-text">Dashboard</span></h1>
+</div>
+<div class="container">
+    <div class="dashboard-grid mb-4">
+        <div class="card widget text-center"><div class="widget-value" style="color:#667eea;">{{ stats.total }}</div><div class="widget-label">Total Modules</div></div>
+        <div class="card widget text-center"><div class="widget-value" style="color:#43e97b;">{{ stats.completed }}</div><div class="widget-label">Completed</div></div>
+        <div class="card widget text-center"><div class="widget-value" style="color:#f9d423;">{{ stats.pending }}</div><div class="widget-label">Pending</div></div>
+        <div class="card widget text-center"><div class="widget-value" style="color:#4facfe;">{{ stats.compliance_rate }}%</div><div class="widget-label">Compliance Rate</div></div>
+    </div>
+    <div class="card mb-4"><h3 style="margin-bottom:1rem;">Overall Compliance Progress</h3>
+        <div class="progress-bar" style="height:12px;"><div class="progress-fill {% if stats.compliance_rate >= 80 %}success{% elif stats.compliance_rate >= 50 %}{% else %}danger{% endif %}" style="width:{{ stats.compliance_rate }}%;"></div></div>
+        <p class="text-muted mt-1" style="font-size:0.85rem;">{{ stats.completed }} of {{ stats.total }} modules completed</p>
+    </div>
+    {% if records %}
+    <div class="table-container">
+        <table><thead><tr><th>Module</th><th>Regulation</th><th>Score</th><th>Status</th><th>Certificate</th><th>AI Feedback</th><th>Date</th></tr></thead><tbody>
+        {% for rec in records %}<tr>
+            <td style="font-weight:600;">{{ rec.module.title }}</td>
+            <td><span class="badge badge-info">{{ rec.module.get_regulation_display|truncatewords:3 }}</span></td>
+            <td><span style="font-weight:700;color:{% if rec.passed %}#43e97b{% else %}#fa709a{% endif %};">{{ rec.percentage }}%</span></td>
+            <td>{% if rec.passed %}<span class="badge badge-success"><i class="fas fa-check"></i> Passed</span>{% else %}<span class="badge badge-danger"><i class="fas fa-times"></i> Failed</span>{% endif %}</td>
+            <td>
+                {% if rec.passed and rec.certificate_id %}
+                    <a href="{% url 'compliance:certificate' rec.certificate_id %}" target="_blank" class="btn btn-sm btn-outline"><i class="fas fa-download"></i> Certificate</a>
+                {% else %}—{% endif %}
+            </td>
+            <td style="font-size: 0.85rem; color: var(--text-secondary); max-width: 250px;">
+                {% if rec.weak_areas %}<div style="color: #fa709a;"><i class="fas fa-exclamation-triangle"></i> {{ rec.weak_areas|join:", " }}</div>{% else %}<span>Perfect understanding.</span>{% endif %}
+            </td>
+            <td>{{ rec.completion_date|date:"M d, Y" }}</td>
+        </tr>{% endfor %}</tbody></table>
+    </div>
+    {% else %}<div class="card text-center" style="padding:3rem;"><p class="text-muted">No compliance records yet. Complete your first training module!</p><a href="{% url 'compliance:module_list' %}" class="btn btn-primary mt-2">Start Training</a></div>{% endif %}
+</div>
+{% endblock %}

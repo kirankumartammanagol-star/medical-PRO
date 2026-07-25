@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Workforce Demand Dashboard{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="breadcrumb"><a href="{% url 'index' %}">Home</a> <i class="fas fa-chevron-right"></i> Workforce Forecasting</div>
+    <h1>Workforce <span class="gradient-text">Demand Forecasting</span></h1>
+    <p>AI-powered healthcare workforce demand analysis and specialty shortage predictions</p>
+</div>
+<div class="container">
+    <!-- Summary Stats -->
+    <div class="dashboard-grid mb-4">
+        <div class="card widget"><div class="widget-icon" style="background:rgba(102,126,234,0.15);color:#667eea;"><i class="fas fa-users"></i></div><div class="widget-value" style="color:#667eea;">{{ stats.total_demand|default:"133000" }}</div><div class="widget-label">Total Demand</div></div>
+        <div class="card widget"><div class="widget-icon" style="background:rgba(0,212,170,0.15);color:#00d4aa;"><i class="fas fa-user-check"></i></div><div class="widget-value" style="color:#00d4aa;">{{ stats.total_supply|default:"97700" }}</div><div class="widget-label">Total Supply</div></div>
+        <div class="card widget"><div class="widget-icon" style="background:rgba(250,112,154,0.15);color:#fa709a;"><i class="fas fa-exclamation-triangle"></i></div><div class="widget-value" style="color:#fa709a;">{{ stats.total_shortage|default:"35300" }}</div><div class="widget-label">Workforce Gap</div></div>
+        <div class="card widget"><div class="widget-icon" style="background:rgba(249,212,35,0.15);color:#f9d423;"><i class="fas fa-flag"></i></div><div class="widget-value" style="color:#f9d423;">{{ stats.critical_count|default:"6" }}</div><div class="widget-label">Critical Specialties</div></div>
+    </div>
+
+    <!-- Chart and Table -->
+    <div class="grid-2 mb-4">
+        <div class="card chart-card">
+            <h3 style="margin-bottom:0.5rem;">Demand vs Supply by Specialty</h3>
+            <p class="text-muted" style="font-size:0.85rem;">Bar chart showing workforce demand and supply</p>
+            <div class="chart-container">
+                <canvas id="demandChart"></canvas>
+                {% for spec in specialty_stats %}
+                <div class="chart-data-item" style="display:none;" data-label="{{ spec.name }}" data-demand="{{ spec.demand }}" data-supply="{{ spec.supply }}" data-color="{{ spec.color }}"></div>
+                {% endfor %}
+            </div>
+            <div style="display:flex;gap:1.5rem;margin-top:1rem;justify-content:center;">
+                <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-muted);"><div style="width:12px;height:12px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:3px;"></div>Demand</div>
+                <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-muted);"><div style="width:12px;height:12px;background:linear-gradient(135deg,#00d4aa,#43e97b);border-radius:3px;"></div>Supply</div>
+            </div>
+        </div>
+        <div class="card" style="padding:1.5rem;">
+            <h3 style="margin-bottom:1rem;">Shortage Analysis</h3>
+            {% for spec in specialty_stats %}
+            <div style="display:flex;align-items:center;gap:1rem;padding:0.6rem 0;border-bottom:1px solid var(--border-color);">
+                <span style="font-size:0.9rem;flex:1;font-weight:500;">{{ spec.name }}</span>
+                <span class="badge" style="background:{{ spec.color }}20;color:{{ spec.color }};">{{ spec.level }}</span>
+                <span style="font-size:0.85rem;color:var(--text-muted);min-width:80px;text-align:right;">Gap: {{ spec.shortage|default:"0" }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Detailed Table -->
+    <div class="card">
+        <h3 style="margin-bottom:1.5rem;padding:1.5rem 1.5rem 0;">Specialty-wise Workforce Analysis</h3>
+        <div class="table-container" style="border:none;">
+            <table><thead><tr><th>Specialty</th><th>Demand</th><th>Supply</th><th>Shortage</th><th>Level</th><th>Avg Salary (₹)</th><th>Action</th></tr></thead><tbody>
+                {% for spec in specialty_stats %}<tr>
+                    <td style="font-weight:600;">{{ spec.name }}</td>
+                    <td>{{ spec.demand|default:"0" }}</td>
+                    <td>{{ spec.supply|default:"0" }}</td>
+                    <td style="font-weight:700;color:#fa709a;">{{ spec.shortage|default:"0" }}</td>
+                    <td><span class="badge" style="background:{{ spec.color }}20;color:{{ spec.color }};">{{ spec.level }}</span></td>
+                    <td>₹{{ spec.avg_salary|floatformat:0 }}</td>
+                    <td><a href="{% url 'workforce:specialty_analysis' %}?specialty={{ spec.code|default:'general_medicine' }}" class="btn btn-sm btn-secondary">Analyze</a></td>
+                </tr>{% endfor %}</tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
