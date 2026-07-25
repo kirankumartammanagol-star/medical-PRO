@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import { motion, AnimatePresence } from 'framer-motion';
 import AuthModal from './AuthModal';
 
 const Navbar = () => {
@@ -92,9 +92,12 @@ const Navbar = () => {
                 </div>
 
                 {/* Mobile Menu */}
-                <>
+                <AnimatePresence>
                     {menuOpen && (
-                        <div
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
                             className="lg:hidden glass border-t border-white/30"
                         >
                             <div className="max-w-7xl mx-auto px-4 py-4">
@@ -126,9 +129,9 @@ const Navbar = () => {
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </motion.div>
                     )}
-                </>
+                </AnimatePresence>
             </nav>
 
             {/* Auth Modal */}

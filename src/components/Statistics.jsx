@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-
+import { motion } from 'framer-motion';
 
 const stats = [
     {
@@ -73,8 +73,12 @@ const StatCard = ({ stat, index }) => {
     }, []);
 
     return (
-        <div
+        <motion.div
             ref={ref}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
             className={`hover-lift relative overflow-hidden rounded-2xl border ${stat.border} bg-gradient-to-br ${stat.bg} p-6 shadow-lg`}
         >
             {/* Glow circle */}
@@ -87,20 +91,23 @@ const StatCard = ({ stat, index }) => {
                 {count.toLocaleString()}<span className="text-sky-500">{stat.suffix}</span>
             </div>
             <div className="text-slate-500 font-medium mt-1 text-sm">{stat.label}</div>
-        </div>
+        </motion.div>
     );
 };
 
 const Statistics = () => (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white" aria-label="Platform statistics">
         <div className="max-w-7xl mx-auto">
-            <div
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 className="text-center mb-14"
             >
                 <span className="inline-block px-4 py-1.5 rounded-full bg-sky-50 text-sky-600 text-xs font-bold uppercase tracking-widest mb-4 border border-sky-100">By The Numbers</span>
                 <h2 className="text-4xl font-bold text-slate-900">Trusted By Thousands</h2>
                 <p className="text-slate-500 mt-3 max-w-lg mx-auto">The largest healthcare recruitment network in India</p>
-            </div>
+            </motion.div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
                 {stats.map((stat, i) => <StatCard key={stat.label} stat={stat} index={i} />)}
             </div>

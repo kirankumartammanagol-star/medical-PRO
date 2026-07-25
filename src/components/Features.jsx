@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { motion } from 'framer-motion';
 
 const features = [
     {
@@ -56,7 +56,10 @@ const Features = () => (
 
         <div className="max-w-7xl mx-auto relative z-10">
             {/* Header */}
-            <div
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 className="text-center mb-16 max-w-2xl mx-auto"
             >
                 <span className="inline-block px-4 py-1.5 rounded-full bg-sky-500/20 text-sky-300 text-xs font-bold uppercase tracking-widest mb-4 border border-sky-500/30">
@@ -68,13 +71,17 @@ const Features = () => (
                 <p className="text-slate-400 text-lg leading-relaxed">
                     Everything you need to accelerate your healthcare career or find the perfect candidate
                 </p>
-            </div>
+            </motion.div>
 
             {/* Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {features.map((f, i) => (
-                    <div
+                    <motion.div
                         key={f.title}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: i * 0.1 }}
                         className="group relative hover-lift rounded-2xl p-7 cursor-default flex flex-col"
                         style={{
                             background: 'rgba(255,255,255,0.04)',
@@ -103,7 +110,7 @@ const Features = () => (
                                 <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </div>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
         </div>

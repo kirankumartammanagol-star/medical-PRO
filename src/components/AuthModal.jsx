@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { motion, AnimatePresence } from 'framer-motion';
 
 const AuthModal = ({ isOpen, onClose, initialTab = 'login' }) => {
     const [tab, setTab] = useState(initialTab);
@@ -27,20 +27,27 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'login' }) => {
     if (!isOpen) return null;
 
     return (
-        <>
+        <AnimatePresence>
             {isOpen && (
                 <>
                     {/* Backdrop */}
-                    <div
+                    <motion.div
                         key="backdrop"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
                         className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100]"
                         onClick={onClose}
                         aria-hidden="true"
                     />
 
                     {/* Modal */}
-                    <div
+                    <motion.div
                         key="modal"
+                        initial={{ opacity: 0, scale: 0.92, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.92, y: 20 }}
+                        transition={{ duration: 0.3, ease: 'easeOut' }}
                         className="fixed inset-0 z-[101] flex items-center justify-center p-4"
                         role="dialog"
                         aria-modal="true"
@@ -247,7 +254,7 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'login' }) => {
                                                         />
                                                         <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" aria-label="Toggle password">
                                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                                                                <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2" /><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" /></>
+                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2" /><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" />
                                                             </svg>
                                                         </button>
                                                     </div>
@@ -299,10 +306,10 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'login' }) => {
                                 </svg>
                             </button>
                         </div>
-                    </div>
+                    </motion.div>
                 </>
             )}
-        </>
+        </AnimatePresence>
     );
 };
 
