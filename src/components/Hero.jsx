@@ -230,11 +230,8 @@ const Hero = () => {
 
                             {/* Floating Cards — positioned around the box */}
                             <FloatingCard className="absolute -top-5 -left-5 flex items-center gap-3 px-4 py-3 w-44" delay={0.5}>
-                                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center shadow-md flex-shrink-0">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                        <path d="M9 3H15M9 3C9 3 5 4 5 9C5 14 9 15 9 15H15C15 15 19 14 19 9C19 4 15 3 15 3M9 3C9 3 9 6 12 6C15 6 15 3 15 3" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                                        <path d="M12 11V17M9 14H15" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                                    </svg>
+                                <div className="w-9 h-9 rounded-xl overflow-hidden shadow-md flex-shrink-0 border-2 border-indigo-200">
+                                    <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=150&h=150" alt="Dr. Michael" className="w-full h-full object-cover" crossOrigin="anonymous" />
                                 </div>
                                 <div>
                                     <div className="font-bold text-slate-900 text-sm leading-tight">AI Match</div>
@@ -243,10 +240,8 @@ const Hero = () => {
                             </FloatingCard>
 
                             <FloatingCard className="absolute -bottom-5 -left-5 flex items-center gap-3 px-4 py-3 w-48" delay={1}>
-                                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-md flex-shrink-0">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                        <path d="M9 12L11 14L15 10M21 12C21 16.97 16.97 21 12 21C7.03 21 3 16.97 3 12C3 7.03 7.03 3 12 3C16.97 3 21 7.03 21 12Z" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
+                                <div className="w-9 h-9 rounded-xl overflow-hidden shadow-md flex-shrink-0 border-2 border-green-200">
+                                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=150&h=150" alt="Dr. Sarah" className="w-full h-full object-cover" crossOrigin="anonymous" />
                                 </div>
                                 <div>
                                     <div className="font-bold text-slate-900 text-sm leading-tight">Credentials</div>
@@ -255,11 +250,8 @@ const Hero = () => {
                             </FloatingCard>
 
                             <FloatingCard className="absolute top-1/2 -translate-y-1/2 -right-5 flex items-center gap-3 px-4 py-3 w-44" delay={1.5}>
-                                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center shadow-md flex-shrink-0">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                        <path d="M12 2L4 6V12C4 16.4 7.4 20.5 12 21.5C16.6 20.5 20 16.4 20 12V6L12 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        <path d="M9 12L11 14L15 10" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
+                                <div className="w-9 h-9 rounded-xl overflow-hidden shadow-md flex-shrink-0 border-2 border-sky-200">
+                                    <img src="https://images.unsplash.com/photo-1594824436998-efa5e5b3fbb1?auto=format&fit=crop&q=80&w=150&h=150" alt="Dr. Aisha" className="w-full h-full object-cover" crossOrigin="anonymous" />
                                 </div>
                                 <div>
                                     <div className="font-bold text-slate-900 text-sm leading-tight">HIPAA</div>
