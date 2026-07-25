@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+
 
 const faqs = [
     {
@@ -28,11 +28,7 @@ const FAQItem = ({ faq, index }) => {
     const [open, setOpen] = useState(false);
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.08 }}
+        <div
             className="border border-slate-200 rounded-2xl overflow-hidden hover:border-sky-200 transition-colors duration-200"
         >
             <button
@@ -42,52 +38,43 @@ const FAQItem = ({ faq, index }) => {
                 aria-controls={`faq-answer-${index}`}
             >
                 <span className="font-semibold text-slate-900 pr-4 text-sm sm:text-base">{faq.q}</span>
-                <motion.div
-                    animate={{ rotate: open ? 45 : 0 }}
-                    transition={{ duration: 0.2 }}
+                <div
                     className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-sky-500 to-teal-400 flex items-center justify-center"
                     aria-hidden="true"
                 >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                         <path d="M12 5v14M5 12h14" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
                     </svg>
-                </motion.div>
+                </div>
             </button>
 
-            <AnimatePresence initial={false}>
+            <>
                 {open && (
-                    <motion.div
+                    <div
                         id={`faq-answer-${index}`}
                         key="answer"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
                         className="overflow-hidden"
                     >
                         <div className="px-6 pb-6 pt-2 text-slate-500 text-sm leading-relaxed bg-sky-50 border-t border-sky-100">
                             {faq.a}
                         </div>
-                    </motion.div>
+                    </div>
                 )}
-            </AnimatePresence>
-        </motion.div>
+            </>
+        </div>
     );
 };
 
 const FAQ = () => (
     <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white" aria-label="Frequently asked questions">
         <div className="max-w-3xl mx-auto">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+            <div
                 className="text-center mb-14"
             >
                 <span className="inline-block px-4 py-1.5 rounded-full bg-sky-50 text-sky-600 text-xs font-bold uppercase tracking-widest mb-4 border border-sky-100">FAQ</span>
                 <h2 className="text-4xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h2>
                 <p className="text-slate-500">Got questions? We have answers. Can't find what you're looking for? <a href="#contact" className="text-sky-500 font-semibold hover:underline">Contact us</a>.</p>
-            </motion.div>
+            </div>
 
             <div className="space-y-4">
                 {faqs.map((faq, i) => <FAQItem key={i} faq={faq} index={i} />)}

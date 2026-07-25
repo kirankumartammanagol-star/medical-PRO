@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+
 
 const jobs = [
     { title: 'Senior Cardiologist', hospital: 'Apollo Hospitals', location: 'Mumbai, MH', salary: '₹2.5L – ₹4L/mo', experience: '8+ Years', type: 'Full Time', badge: 'Urgent', badgeColor: 'bg-red-100 text-red-600', typeColor: 'bg-sky-50 text-sky-600 border-sky-100', initials: 'A', color: '#0369A1' },
@@ -11,11 +11,7 @@ const jobs = [
 ];
 
 const JobCard = ({ job, index }) => (
-    <motion.article
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: index * 0.08 }}
+    <article
         className="hover-lift bg-white rounded-2xl p-6 shadow-lg shadow-slate-100/80 border border-slate-100 flex flex-col group"
         aria-label={`${job.title} at ${job.hospital}`}
     >
@@ -70,16 +66,13 @@ const JobCard = ({ job, index }) => (
                 Apply Now
             </button>
         </div>
-    </motion.article>
+    </article>
 );
 
 const FeaturedJobs = () => (
     <section className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-50" aria-label="Featured jobs">
         <div className="max-w-7xl mx-auto">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+            <div
                 className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-12 gap-4"
             >
                 <div>
@@ -96,7 +89,7 @@ const FeaturedJobs = () => (
                         <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </a>
-            </motion.div>
+            </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {jobs.map((job, i) => <JobCard key={job.title} job={job} index={i} />)}

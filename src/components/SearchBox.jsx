@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+
 
 const popularTags = ['Doctor', 'Nurse', 'Lab Technician', 'Radiologist', 'Physiotherapist', 'Pharmacist'];
 
@@ -9,11 +9,7 @@ const SearchBox = () => {
     return (
         <section id="jobs" className="py-16 px-4 sm:px-6 lg:px-8" aria-label="Job search">
             <div className="max-w-5xl mx-auto">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
+                <div
                     className="bg-white rounded-3xl p-8 shadow-2xl shadow-sky-100/50 border border-slate-100"
                     style={{ outline: '1.5px solid transparent', backgroundImage: 'linear-gradient(white,white), linear-gradient(135deg,#0EA5E9,#14B8A6,#6366F1)', backgroundOrigin: 'border-box', backgroundClip: 'padding-box, border-box' }}
                 >
@@ -117,7 +113,7 @@ const SearchBox = () => {
                             </button>
                         ))}
                     </div>
-                </motion.div>
+                </div>
             </div>
         </section>
     );

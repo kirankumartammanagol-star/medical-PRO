@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+
 
 const fadeUp = {
     hidden: { opacity: 0, y: 30 },
@@ -7,15 +7,12 @@ const fadeUp = {
 };
 
 const FloatingCard = ({ children, className, delay = 0 }) => (
-    <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay, duration: 0.6, ease: 'easeOut' }}
+    <div
         className={`glass rounded-2xl shadow-xl shadow-sky-100/40 ${className}`}
         style={{ animation: `float ${3.5 + delay}s ease-in-out ${delay}s infinite` }}
     >
         {children}
-    </motion.div>
+    </div>
 );
 
 const Hero = () => {
@@ -49,34 +46,34 @@ const Hero = () => {
                     <div className="flex flex-col items-start gap-7">
 
                         {/* Badge */}
-                        <motion.div
+                        <div
                             variants={fadeUp} initial="hidden" animate="visible" custom={0}
                             className="inline-flex items-center gap-2 glass rounded-full px-4 py-2 text-sm font-medium text-sky-600 border border-sky-100"
                         >
                             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" aria-hidden="true" />
                             Trusted by 150+ Hospitals across India
-                        </motion.div>
+                        </div>
 
                         {/* Heading */}
-                        <motion.h1
+                        <h1
                             variants={fadeUp} initial="hidden" animate="visible" custom={1}
                             className="text-5xl sm:text-6xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] text-slate-900"
                         >
                             Find Your Dream{' '}
                             <span className="gradient-text">Healthcare Career</span>
-                        </motion.h1>
+                        </h1>
 
                         {/* Subtitle */}
-                        <motion.p
+                        <p
                             variants={fadeUp} initial="hidden" animate="visible" custom={2}
                             className="text-lg text-slate-500 max-w-lg leading-relaxed"
                         >
                             Connecting healthcare professionals with verified hospitals through AI-powered recruitment,
                             credential verification, EMR competency testing, and career analytics.
-                        </motion.p>
+                        </p>
 
                         {/* CTA Buttons */}
-                        <motion.div
+                        <div
                             variants={fadeUp} initial="hidden" animate="visible" custom={3}
                             className="flex flex-wrap items-center gap-4"
                         >
@@ -99,10 +96,10 @@ const Hero = () => {
                                     <path d="M5 12h14M12 5l7 7-7 7" stroke="#0EA5E9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </a>
-                        </motion.div>
+                        </div>
 
                         {/* Social Proof */}
-                        <motion.div
+                        <div
                             variants={fadeUp} initial="hidden" animate="visible" custom={4}
                             className="flex flex-wrap items-center gap-5"
                         >
@@ -139,14 +136,11 @@ const Hero = () => {
                                     ))}
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
                     </div>
 
                     {/* ── Right Side – Illustration ── */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.9, ease: 'easeOut', delay: 0.3 }}
+                    <div
                         className="relative hidden lg:flex items-center justify-center"
                     >
                         <div className="relative w-full max-w-md xl:max-w-lg aspect-square">
@@ -280,7 +274,7 @@ const Hero = () => {
                                 </div>
                             </FloatingCard>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </section>

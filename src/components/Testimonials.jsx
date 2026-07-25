@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+
 
 const testimonials = [
     {
@@ -37,25 +37,18 @@ const Testimonials = () => (
         <div className="absolute bottom-0 right-0 w-72 h-72 bg-indigo-100 rounded-full blur-3xl opacity-50" aria-hidden="true" />
 
         <div className="max-w-7xl mx-auto relative z-10">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+            <div
                 className="text-center mb-16"
             >
                 <span className="inline-block px-4 py-1.5 rounded-full bg-sky-50 text-sky-600 text-xs font-bold uppercase tracking-widest mb-4 border border-sky-100">Testimonials</span>
                 <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4">What Our Community Says</h2>
                 <p className="text-slate-500 max-w-xl mx-auto">Join thousands of healthcare professionals who found their dream careers</p>
-            </motion.div>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {testimonials.map((t, i) => (
-                    <motion.div
+                    <div
                         key={t.name}
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: i * 0.15 }}
                         className="hover-lift bg-white rounded-3xl p-8 shadow-xl shadow-slate-100/80 border border-slate-100 relative"
                     >
                         {/* Quote mark */}
@@ -88,7 +81,7 @@ const Testimonials = () => (
                                 <div className="text-xs font-semibold mt-0.5" style={{ color: t.color }}>{t.hospital}</div>
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
                 ))}
             </div>
         </div>

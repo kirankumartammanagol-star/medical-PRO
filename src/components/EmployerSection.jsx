@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+
 
 const EmployerSection = () => (
     <section id="employers" className="py-24 px-4 sm:px-6 lg:px-8 bg-white relative overflow-hidden" aria-label="For employers">
@@ -8,11 +8,7 @@ const EmployerSection = () => (
 
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10">
             {/* Dashboard Illustration */}
-            <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
+            <div
                 className="relative"
             >
                 <div className="rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 p-6 shadow-2xl shadow-slate-200">
@@ -83,14 +79,10 @@ const EmployerSection = () => (
                     <div className="text-2xl font-extrabold text-sky-600">40%</div>
                     <div className="text-xs text-slate-500 font-medium">Faster Hiring</div>
                 </div>
-            </motion.div>
+            </div>
 
             {/* Content */}
-            <motion.div
-                initial={{ opacity: 0, x: 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
+            <div
                 className="space-y-8"
             >
                 <span className="inline-block px-4 py-1.5 rounded-full bg-sky-50 text-sky-600 text-xs font-bold uppercase tracking-widest border border-sky-100">For Hospitals</span>
@@ -133,7 +125,7 @@ const EmployerSection = () => (
                         <path d="M5 12h14M12 5l7 7-7 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </a>
-            </motion.div>
+            </div>
         </div>
     </section>
 );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+
 
 const CTA = () => (
     <section className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden" aria-label="Call to action">
@@ -22,11 +22,7 @@ const CTA = () => (
         <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-teal-400/30 rounded-full blur-3xl" aria-hidden="true" />
 
         <div className="max-w-5xl mx-auto text-center relative z-10">
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7 }}
+            <div
             >
                 {/* Badge */}
                 <div className="inline-flex items-center gap-2 bg-white/20 border border-white/30 rounded-full px-4 py-1.5 text-sm text-white font-medium mb-6 backdrop-blur-sm">
@@ -74,7 +70,7 @@ const CTA = () => (
                         </div>
                     ))}
                 </div>
-            </motion.div>
+            </div>
         </div>
     </section>
 );

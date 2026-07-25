@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+
 
 const steps = [
     {
@@ -39,16 +39,13 @@ const HowItWorks = () => (
 
         <div className="max-w-7xl mx-auto relative z-10">
             {/* Header */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+            <div
                 className="text-center mb-16 max-w-xl mx-auto"
             >
                 <span className="inline-block px-4 py-1.5 rounded-full bg-sky-50 text-sky-600 text-xs font-bold uppercase tracking-widest mb-4 border border-sky-100">Simple Process</span>
                 <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-4">How It Works</h2>
                 <p className="text-slate-500 text-base leading-relaxed">Get started in minutes. Our streamlined process gets you from profile to hired.</p>
-            </motion.div>
+            </div>
 
             {/* Steps */}
             <div className="relative">
@@ -59,12 +56,8 @@ const HowItWorks = () => (
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
                     {steps.map((step, i) => (
-                        <motion.div
+                        <div
                             key={step.number}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: i * 0.15 }}
                             className="flex flex-col items-center text-center"
                         >
                             {/* Icon */}
@@ -79,16 +72,13 @@ const HowItWorks = () => (
 
                             <h3 className="text-lg font-bold text-slate-900 mb-2">{step.title}</h3>
                             <p className="text-slate-500 text-sm leading-relaxed max-w-[220px]">{step.desc}</p>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </div>
 
             {/* CTA */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+            <div
                 className="flex justify-center mt-14"
             >
                 <a
@@ -100,7 +90,7 @@ const HowItWorks = () => (
                         <path d="M5 12h14M12 5l7 7-7 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 </a>
-            </motion.div>
+            </div>
         </div>
     </section>
 );

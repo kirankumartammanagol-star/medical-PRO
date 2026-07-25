@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+
 
 const hospitals = [
     { name: 'Apollo Hospitals', color: '#0369A1' },
@@ -27,16 +27,13 @@ const HospitalLogo = ({ hospital }) => (
 const TopHospitals = () => (
     <section className="py-20 bg-white overflow-hidden" aria-label="Partner hospitals">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+            <div
                 className="text-center mb-12"
             >
                 <span className="inline-block px-4 py-1.5 rounded-full bg-sky-50 text-sky-600 text-xs font-bold uppercase tracking-widest mb-4 border border-sky-100">Partner Network</span>
                 <h2 className="text-3xl font-bold text-slate-900">Trusted By Top Hospitals</h2>
                 <p className="text-slate-500 mt-2">Join 8,500+ leading healthcare institutions</p>
-            </motion.div>
+            </div>
 
             <div className="relative">
                 {/* Gradient fade edges */}
