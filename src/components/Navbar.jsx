@@ -21,7 +21,7 @@ const Navbar = () => {
     return (
         <>
             <nav
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass shadow-lg shadow-sky-100/50 py-3' : 'bg-transparent py-4'
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || menuOpen ? 'glass shadow-lg shadow-sky-100/50 py-3' : 'bg-transparent py-4'
                     }`}
                 role="navigation"
                 aria-label="Main navigation"

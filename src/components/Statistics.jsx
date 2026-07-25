@@ -101,7 +101,7 @@ const Statistics = () => (
                 <h2 className="text-4xl font-bold text-slate-900">Trusted By Thousands</h2>
                 <p className="text-slate-500 mt-3 max-w-lg mx-auto">The largest healthcare recruitment network in India</p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
                 {stats.map((stat, i) => <StatCard key={stat.label} stat={stat} index={i} />)}
             </div>
         </div>

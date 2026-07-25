@@ -9,7 +9,7 @@ const EmployerSection = () => (
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10">
             {/* Dashboard Illustration */}
             <div
-                className="relative"
+                className="relative order-2 lg:order-1"
             >
                 <div className="rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 p-6 shadow-2xl shadow-slate-200">
                     {/* Window chrome */}
@@ -83,7 +83,7 @@ const EmployerSection = () => (
 
             {/* Content */}
             <div
-                className="space-y-8"
+                className="space-y-8 order-1 lg:order-2"
             >
                 <span className="inline-block px-4 py-1.5 rounded-full bg-sky-50 text-sky-600 text-xs font-bold uppercase tracking-widest border border-sky-100">For Hospitals</span>
 

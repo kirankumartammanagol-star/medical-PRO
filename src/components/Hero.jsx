@@ -57,7 +57,7 @@ const Hero = () => {
                         {/* Heading */}
                         <h1
                             variants={fadeUp} initial="hidden" animate="visible" custom={1}
-                            className="text-5xl sm:text-6xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] text-slate-900"
+                            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] text-slate-900"
                         >
                             Find Your Dream{' '}
                             <span className="gradient-text">Healthcare Career</span>
